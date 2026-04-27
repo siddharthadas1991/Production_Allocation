@@ -1,0 +1,104 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Production Allocation',
+    typeNamePlural: 'Production Allocation',
+    title: {
+        type: #STANDARD,
+        label: 'Production Allocation',
+        value: 'Docid'
+    }
+}
+annotate entity ZORN_PV_PAH with
+{
+  @UI.facet: [
+     {
+      id: 'i_1',
+      purpose: #STANDARD,
+      position: 10 ,
+      label: 'Header Information',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'i_1'
+     },
+     {
+          id: 'i_2',
+          purpose: #STANDARD,
+          position: 40 ,
+          label: 'General Information',
+          type: #FIELDGROUP_REFERENCE,
+          targetQualifier: 'i_2'
+     },
+     {
+      id: '_Det',                              
+      purpose: #STANDARD,
+      position: 20,
+      label: 'Allocation Details',
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_details'     // Navigation target
+    }
+    ]
+  @UI.lineItem: [{ position: 10 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 10 }]
+  @UI.hidden: true
+  @UI.identification: [{ position: 10, label: 'SAP ID' },
+    { type: #FOR_ACTION, dataAction: 'FetchData', label: 'Fetch Details' } 
+    ]
+  Sapid;
+  @UI.lineItem: [{ position: 20 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 20 }]
+  @EndUserText.label: 'Document ID'
+  Docid;
+  @UI.lineItem: [{ position: 30 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 30 }]
+  @EndUserText.label: 'Internal Order No.'
+  @Consumption.valueHelpDefinition: [{
+  entity : { name: 'ZORN_VH_SO', element: 'SalesOrder' }  ,
+            useForValidation: true  
+  }] 
+  Internalorderno;
+  @UI.lineItem: [{ position: 40 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 40 }]
+  @EndUserText.label: 'SKU# No.'
+  @Consumption.valueHelpDefinition: [{
+  entity : { name: 'ZORN_VH_SO_LINE', element: 'Product' }  ,
+            useForValidation: true ,
+            additionalBinding: [{ localElement: 'Internalorderno' , element: 'SalesOrder',usage: #FILTER_AND_RESULT} ]
+  }] 
+  Skuno;
+  @UI.lineItem: [{ position: 50 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 50 }]
+  @EndUserText.label: 'Description'
+  Description;
+  @UI.lineItem: [{ position: 60 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 60 }]
+  @EndUserText.label: 'Buyer Sales order No'
+  Buyersono;
+  @UI.lineItem: [{ position: 70 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 70 }]
+  @EndUserText.label: 'Buyer SKU# No.'
+  Buyerskuno;
+  @UI.lineItem: [{ position: 80 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 80 }]
+  @EndUserText.label: 'Order Quantity' 
+  Orderquantity; 
+//  @Consumption.valueHelpDefinition: [{
+//  entity : { name: 'ZORN_VH_UNIT', element: 'UnitOfMeasure_E' }  ,
+//            useForValidation: true  
+//  }] 
+//  Qtyunit;
+  @UI.lineItem: [{ position: 90 }]
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 90 }]
+  @EndUserText.label: 'Sales Order Plant'  
+  hplant; 
+  @UI.lineItem: [{ position: 100 }]
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 10 }]
+  CreatedBy;
+  @UI.lineItem: [{ position: 110 }]
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 20 }]
+  CreatedAt;
+  @UI.lineItem: [{ position: 120 }]
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 30 }]
+  LastChangedBy;
+  @UI.lineItem: [{ position: 130 }]
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 40 }]
+  LastChangedAt;
+}

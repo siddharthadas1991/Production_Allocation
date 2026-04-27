@@ -1,0 +1,79 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Production Allocation Mapping Sheet',
+    typeNamePlural: 'Production Allocation Mapping Sheet',
+    title: {
+        type: #STANDARD,
+        label: 'Production Allocation Mapping Sheet',
+        value: 'docid'
+    }
+}
+
+annotate entity ZORN_PV_PA_MS with
+{
+  @UI.facet: [{
+      id: 'i_1',
+      purpose: #STANDARD,
+      position: 10 ,
+      label: 'Details',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'i_1'
+  } ,
+  {
+      id: 'i_2',
+      purpose: #STANDARD,
+      position: 40 ,
+      label: 'General Information',
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'i_2'
+  }]
+
+  @UI.hidden: true
+  Sapid;
+  @UI.lineItem: [{ position: 10 }]
+  @EndUserText.label: 'Document ID'
+  docid;
+  @EndUserText.label: 'Process'
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 20 }]
+  @UI.lineItem: [{ position: 20 }]
+  Process;
+  @EndUserText.label: 'Allotee Name'
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 30 }]
+  @UI.lineItem: [{ position: 30 }]
+  AllotteeName;
+  @EndUserText.label: 'Processes'
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 40 }]
+  @UI.lineItem: [{ position: 40 }]
+  
+  @Consumption.valueHelpDefinition: [{
+  entity : { name: 'ZUNE_CDS_MainProcess_VH', element: 'value_low' }  ,
+            useForValidation: true,
+            additionalBinding: [{ localElement: 'processes_name' , element: 'text' , usage: #RESULT  }] 
+  }] 
+  Processes;
+  @EndUserText.label: 'Processes Name'
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 41 }]
+  @UI.lineItem: [{ position: 41 }] 
+  processes_name;
+  @EndUserText.label: 'Plant'
+  @UI.fieldGroup: [{ qualifier: 'i_1' , position: 50 }]
+  @UI.lineItem: [{ position: 50 }]
+  @Consumption.valueHelpDefinition: [{
+    entity: { name: 'I_Plant', element: 'Plant' },   // Value help from standard CDS view
+    useForValidation: true
+  }]
+  Plant;
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 10 }]
+  @UI.lineItem: [{ position: 60 }]
+  CreatedBy;
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 20 }]
+  @UI.lineItem: [{ position: 70 }]
+  CreatedAt;
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 30 }]
+  @UI.lineItem: [{ position: 80 }]
+  LastChangedBy;
+  @UI.fieldGroup: [{ qualifier: 'i_2' , position: 40 }]
+  @UI.lineItem: [{ position: 90 }]
+  LastChangedAt;
+
+}

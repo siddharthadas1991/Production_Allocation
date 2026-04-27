@@ -1,0 +1,48 @@
+managed;
+strict ( 2 );
+with draft;
+
+define behavior for ZORN_RV_PA_MS alias rt_mapping
+implementation in class zbp_orn_rv_pa_ms unique
+persistent table zorn_dt_pa_ms
+draft table zorn_dt_pa_ms_d
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  draft determine action Prepare;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+
+  field ( numbering : managed ) Sapid;
+  field ( readonly ) Sapid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+  field ( mandatory ) AllotteeName, Plant, Process, Processes;
+
+  determination SetInitialData on save { create; }
+  validation validateEntry on save { create; update; field AllotteeName, Plant, Process, Processes; }
+  determine action ValidateMandatoryEntry { validation validateEntry; }
+
+
+
+  mapping for zorn_dt_pa_ms corresponding
+    {
+      Sapid          = sapid;
+      Processes      = processes;
+      Process        = process;
+      processes_name = processes_name;
+      Plant          = plant;
+      LastChangedBy  = last_changed_by;
+      LastChangedAt  = last_changed_at;
+      CreatedBy      = created_by;
+      CreatedAt      = created_at;
+      AllotteeName   = allottee_name;
+    }
+
+
+}

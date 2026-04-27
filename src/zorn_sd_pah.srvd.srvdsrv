@@ -1,0 +1,6 @@
+@EndUserText.label: 'Service Def For Production Allocation'
+define service ZORN_SD_PAH {
+  expose ZORN_PV_PAH  as Prod_Allocation;
+  expose ZORN_PV_PAD  as Prod_Allocation_d;
+  expose ZORN_PV_PAD1 as Prod_Allocation_D1;
+}

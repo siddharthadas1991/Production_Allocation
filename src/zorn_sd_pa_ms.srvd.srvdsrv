@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Def For Mapping Sheet'
+define service ZORN_SD_PA_MS {
+  expose ZORN_PV_PA_MS as PA_Mapping_sheet;
+}

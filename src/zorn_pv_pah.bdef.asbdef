@@ -1,0 +1,72 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+
+define behavior for ZORN_PV_PAH alias Bh_Header
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Activate;
+  use action Discard;
+  use action Edit;
+  use action Resume;
+  use action Prepare;
+
+  field ( readonly ) Sapid, CreatedAt, CreatedBy, LastChangedAt, Qtyunit ,LastChangedBy,  Docid, hplant, Description;
+
+  side effects
+  {
+    field Skuno affects field ( Description, Orderquantity, Qtyunit, hplant, Buyerskuno, Buyersono );
+    field Internalorderno affects field ( Skuno );
+    action FetchData affects entity _details;
+
+    field Orderquantity affects entity _details;
+
+  }
+
+  use action FetchData;
+
+
+
+  use association _details { create; with draft; }
+}
+
+define behavior for ZORN_PV_PAD alias Bh_Detail
+{
+  use update;
+  use delete;
+
+  field ( readonly ) Sapid, Productcode, Productname, Materialtype, Process, Allotteename, Length, Width, Height, Plant, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, Lineid, Linenum;
+
+  side effects
+  {
+    field processid affects field ( Process, Allotteename, Plant );
+    action FetchDetailData affects entity _details1;
+  }
+
+
+  use action FetchDetailData;
+
+  use association _Header { with draft; }
+  use association _details1 { create; with draft; }
+}
+
+define behavior for ZORN_PV_PAD1 alias Bh_Detail1
+{
+  use update;
+  use delete;
+
+  field ( readonly ) Sapid, Lineid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, Linenum, LinenumD, Machinesname, Processessfg;
+
+  side effects
+  {
+    field processessid affects field ( Processessfg );
+    field Machinescode affects field ( Machinesname );
+  }
+
+  use association _Detailh { with draft; }
+  use association _Header { with draft; }
+}

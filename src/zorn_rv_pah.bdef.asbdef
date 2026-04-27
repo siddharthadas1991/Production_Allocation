@@ -1,0 +1,143 @@
+managed;
+strict ( 2 );
+with draft;
+
+define behavior for ZORN_RV_PAH alias Bh_Header
+implementation in class zbp_orn_rv_pah unique
+persistent table zorn_dt_pah
+draft table zorn_dt_pahd
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  field ( numbering : managed ) Sapid;
+  field ( readonly ) Sapid;
+
+  determination SetInitialData on save { create; }
+  validation validateEntry on save { create; update; field Internalorderno; }
+  determine action ValidateMandatoryEntry { validation validateEntry; }
+
+  determination fetchdatafromSO on modify { field Skuno; }
+
+  determination calculate on modify { field Orderquantity; }
+
+  action FetchData;
+
+
+  mapping for zorn_dt_pah corresponding
+    {
+      CreatedAt       = created_at;
+      CreatedBy       = created_by;
+      LastChangedAt   = last_changed_at;
+      LastChangedBy   = last_changed_by;
+      Skuno           = skuno;
+      Sapid           = Sapid;
+      Buyerskuno      = Buyerskuno;
+      Buyersono       = Buyersono;
+      Description     = Description;
+      Docid           = Docid;
+      Internalorderno = Internalorderno;
+      Orderquantity   = Orderquantity;
+      Qtyunit         = Qtyunit;
+      hplant          = hplant;
+    }
+
+  association _details { create; with draft; }
+}
+
+define behavior for ZORN_RV_PAD alias Bh_Detail
+implementation in class zbp_orn_rv_pad unique
+persistent table zorn_dt_pad
+draft table zorn_dt_pad_d
+lock dependent by _Header
+authorization dependent by _Header
+{
+  update;
+  delete;
+
+  field ( numbering : managed ) Linenum;
+  field ( readonly ) Linenum, Sapid;
+
+
+  determination SetDefaultlineid on modify { create; delete; }
+
+  determination fetchdatafromMappingSheet on modify { field processid; }
+
+  action FetchDetailData;
+
+  mapping for zorn_dt_pad corresponding
+    {
+      CreatedAt       = created_at;
+      CreatedBy       = created_by;
+      LastChangedAt   = last_changed_at;
+      LastChangedBy   = last_changed_by;
+      Sapid           = Sapid;
+      Allotteename    = Allotteename;
+      Assignmentlog   = Assignmentlog;
+      Height          = Height;
+      Length          = Length;
+      Lineid          = Lineid;
+      Linenum         = Linenum;
+      Materialtype    = Materialtype;
+      Plant           = Plant;
+      Process         = Process;
+      Productcode     = Productcode;
+      Productname     = Productname;
+      Qtyunit         = Qtyunit;
+      Quantityalloted = Quantityalloted;
+      Width           = Width;
+      processid       = processid;
+    }
+  association _Header { with draft; }
+  association _details1 { create; with draft; }
+
+}
+
+define behavior for ZORN_RV_PAD1 alias Bh_Detail1
+implementation in class zbp_orn_rv_pad1 unique
+persistent table zorn_dt_pad1
+draft table zorn_dt_pad1_d
+lock dependent by _Header
+authorization dependent by _Header
+{
+  update;
+  delete;
+  field ( numbering : managed ) LinenumD;
+  field ( readonly ) LinenumD, Linenum, Sapid;
+
+  determination SetDefaultlineid on modify { create; delete; }
+
+  determination fetchdatafromMappingSheet on modify { field processessid; }
+  determination fetchdataformachine on modify { field Machinescode; }
+
+  mapping for zorn_dt_pad1 corresponding
+    {
+      CreatedAt        = created_at;
+      CreatedBy        = created_by;
+      LastChangedAt    = last_changed_at;
+      LastChangedBy    = last_changed_by;
+      Sapid            = Sapid;
+      Linenum          = Linenum;
+      LinenumD         = linenum_d;
+      Contractor       = Contractor;
+      Machineno        = Machineno;
+      Machinescode     = Machinescode;
+      Machinesname     = Machinesname;
+      processessid     = processessid;
+      Processessfg     = Processessfg;
+      Processessfgcode = Processessfgcode;
+      Rowselect        = Rowselect;
+    }
+  association _Detailh { with draft; }
+  association _Header { with draft; }
+}
